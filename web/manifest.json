@@ -1,6 +1,6 @@
 {
-    "name": "hm_shop",
-    "short_name": "hm_shop",
+    "name": "easy_mall",
+    "short_name": "easy_mall",
     "start_url": ".",
     "display": "standalone",
     "background_color": "#0175C2",
