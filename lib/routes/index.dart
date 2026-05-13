@@ -11,6 +11,7 @@ Widget getRootWidget (){
     routes: getRootRoutes(),
   );
 }
+
 // 返回该App的路由配置
 Map<String, Widget Function(BuildContext)> getRootRoutes (){
   return {
