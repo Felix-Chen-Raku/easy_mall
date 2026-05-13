@@ -1,4 +1,4 @@
-# hm_shop
+# easy_mall
 
 A new Flutter project.
 
