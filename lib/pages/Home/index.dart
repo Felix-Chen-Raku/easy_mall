@@ -1,3 +1,4 @@
+import 'package:easy_mall/models/home.dart';
 import 'package:easy_mall/widgets/Home/EmCategory.dart';
 import 'package:easy_mall/widgets/Home/EmHot.dart';
 import 'package:easy_mall/widgets/Home/EmMoreList.dart';
@@ -13,10 +14,27 @@ class HomeView extends StatefulWidget {
 }
 
 class _HomeViewState extends State<HomeView> {
+
+  
+  final List<BannerItem> _bannerList = [
+    BannerItem(
+      id: '1',
+      imgUrl: 'https://yjy-teach-oss.oss-cn-beijing.aliyuncs.com/meituan/1.jpg'
+      ),
+    BannerItem(
+      id: '2',
+      imgUrl: 'https://yjy-teach-oss.oss-cn-beijing.aliyuncs.com/meituan/2.png'
+      ),
+    BannerItem(
+      id: '3',
+      imgUrl: 'https://yjy-teach-oss.oss-cn-beijing.aliyuncs.com/meituan/3.jpg'
+      ),
+  ];
+
   // 获取滚动组件
   List<Widget> _getScrollChildren() {
     return [
-      SliverToBoxAdapter(child: EmSlider(),), //轮播图组件
+      SliverToBoxAdapter(child: EmSlider(bannerList: _bannerList,),), //轮播图组件
       SliverToBoxAdapter(child: SizedBox(height: 10,),),
       SliverToBoxAdapter(child: EmCategory(),), // 分类组件
       SliverToBoxAdapter(child: SizedBox(height: 10,),),
