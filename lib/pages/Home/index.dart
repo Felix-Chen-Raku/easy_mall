@@ -1,3 +1,4 @@
+import 'package:easy_mall/api/home.dart';
 import 'package:easy_mall/models/home.dart';
 import 'package:easy_mall/widgets/Home/EmCategory.dart';
 import 'package:easy_mall/widgets/Home/EmHot.dart';
@@ -16,19 +17,19 @@ class HomeView extends StatefulWidget {
 class _HomeViewState extends State<HomeView> {
 
   
-  final List<BannerItem> _bannerList = [
-    BannerItem(
-      id: '1',
-      imgUrl: 'https://yjy-teach-oss.oss-cn-beijing.aliyuncs.com/meituan/1.jpg'
-      ),
-    BannerItem(
-      id: '2',
-      imgUrl: 'https://yjy-teach-oss.oss-cn-beijing.aliyuncs.com/meituan/2.png'
-      ),
-    BannerItem(
-      id: '3',
-      imgUrl: 'https://yjy-teach-oss.oss-cn-beijing.aliyuncs.com/meituan/3.jpg'
-      ),
+  List<BannerItem> _bannerList = [
+    // BannerItem(
+    //   id: '1',
+    //   imgUrl: 'https://yjy-teach-oss.oss-cn-beijing.aliyuncs.com/meituan/1.jpg'
+    //   ),
+    // BannerItem(
+    //   id: '2',
+    //   imgUrl: 'https://yjy-teach-oss.oss-cn-beijing.aliyuncs.com/meituan/2.png'
+    //   ),
+    // BannerItem(
+    //   id: '3',
+    //   imgUrl: 'https://yjy-teach-oss.oss-cn-beijing.aliyuncs.com/meituan/3.jpg'
+    //   ),
   ];
 
   // 获取滚动组件
@@ -56,6 +57,19 @@ class _HomeViewState extends State<HomeView> {
       EmMorelist(),
     ];
   }
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    _getBannerList();
+  }
+
+  void _getBannerList() async {
+    _bannerList = await getBannerListAPI();
+    setState(() {});
+  }
+
   @override
   Widget build(BuildContext context) { // sliver家族
     return CustomScrollView(
