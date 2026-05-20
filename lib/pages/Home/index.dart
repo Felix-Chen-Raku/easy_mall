@@ -40,7 +40,7 @@ class _HomeViewState extends State<HomeView> {
       SliverToBoxAdapter(child: SizedBox(height: 10,),),
       SliverToBoxAdapter(child: Padding(
         padding: EdgeInsets.symmetric(horizontal: 10),
-        child: EmSuggestion(),),), // 推荐组件
+        child: EmSuggestion(specialRecommendResult: _specialRecommendResult,),),), // 推荐组件
       SliverToBoxAdapter(child: SizedBox(height: 10,),),
       SliverToBoxAdapter(child: Padding(
         padding:EdgeInsets.symmetric(horizontal: 10),
@@ -57,12 +57,26 @@ class _HomeViewState extends State<HomeView> {
     ];
   }
 
+  // 特惠推荐组件
+  SpecialRecommendResult _specialRecommendResult = SpecialRecommendResult(
+    id: '',
+    title: '',
+    subTypes: [],
+  );
+
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
     _getBannerList();
     _getCategoryList();
+    _getSpecialRecommend();
+  }
+
+  // 获取特惠推荐
+  void _getSpecialRecommend() async {
+    _specialRecommendResult = await getSpecialRecommendAPI();
+    setState(() {});
   }
 
   // 获取分类列表

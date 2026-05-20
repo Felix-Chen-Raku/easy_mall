@@ -19,3 +19,10 @@ Future<List<CategoryItem>> getCategoryListAPI () async {
   }).toList();
   return res;
 }
+
+// 封装处理获取特惠推荐接口
+Future<SpecialRecommendResult> getSpecialRecommendAPI () async {
+  // 返回请求
+  final res = SpecialRecommendResult.fromJson(await dioRequest.get(HttpConstants.PRODUCT_LIST));
+  return res;
+}
