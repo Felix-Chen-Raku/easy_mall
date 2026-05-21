@@ -53,7 +53,7 @@ class _HomeViewState extends State<HomeView> {
           Expanded(child: EmHot(specialRecommendResult: _oneStopResult, type: 'step',)),
         ],))),
       SliverToBoxAdapter(child: SizedBox(height: 10,),),
-      EmMorelist(),
+      EmMorelist(recommendList: _recommendList,),
     ];
   }
 
@@ -78,6 +78,15 @@ class _HomeViewState extends State<HomeView> {
     subTypes: []
   );
 
+  // 推荐列表
+  List<GoodDetailItem> _recommendList = [];
+
+  // 获取推荐列表
+  void _getRecommendList() async {
+    _recommendList = await getRecommendListAPI({'limit':10}); // limit: 请求数量
+    setState(() {});
+  }
+
   // 获取热榜推荐
   void _getInVogueList() async {
     _inVogueResult = await getInVogueListAPI();
@@ -99,6 +108,7 @@ class _HomeViewState extends State<HomeView> {
     _getSpecialRecommend();
     _getInVogueList();
     _getOnetStopList();
+    _getRecommendList();
   }
 
   // 获取特惠推荐

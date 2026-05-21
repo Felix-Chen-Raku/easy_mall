@@ -38,3 +38,14 @@ Future<SpecialRecommendResult> getONeStopListAPI () async {
   // 返回请求
   return SpecialRecommendResult.fromJson(await dioRequest.get(HttpConstants.ONE_STOP_LIST));
 }
+
+// 封装推荐商品列表
+Future<List<GoodDetailItem>> getRecommendListAPI (
+  Map<String, dynamic> params
+) async {
+  return ((await dioRequest.get(HttpConstants.RECOMMEND_LIST,params: params)) as List)
+          .map((item){
+            return GoodDetailItem.fromJSON(item as Map<String, dynamic>);
+          })
+          .toList();
+}

@@ -134,3 +134,28 @@ class SpecialRecommendResult {
     );
   }
 }
+
+// 推荐列表类型
+class GoodDetailItem extends GoodsItem{
+  int paycount = 0;
+  GoodDetailItem({
+    required super.id,
+    required super.name,
+    required super.price,
+    required super.picture,
+    required super.orderNum,
+    required this.paycount
+  }):super(desc: '');
+
+  // 转换方法
+  factory GoodDetailItem.fromJSON(Map<String, dynamic>json){
+    return GoodDetailItem(
+      id: json['id']?.toString() ?? '', 
+      name: json['name']?.toString() ?? '', 
+      price: json['price']?.toString() ?? '', 
+      picture: json['picture']?.toString() ?? '', 
+      orderNum: int.tryParse(json['oderNum']?.toString() ?? '0') ?? 0, 
+      paycount: int.tryParse(json['paycount']?.toString() ?? '0') ?? 0
+      );
+  }
+}
