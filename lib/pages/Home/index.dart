@@ -1,5 +1,6 @@
 import 'package:easy_mall/api/home.dart';
 import 'package:easy_mall/models/home.dart';
+import 'package:easy_mall/utils/ToastUtils.dart';
 import 'package:easy_mall/widgets/Home/EmCategory.dart';
 import 'package:easy_mall/widgets/Home/EmHot.dart';
 import 'package:easy_mall/widgets/Home/EmMoreList.dart';
@@ -84,8 +85,28 @@ class _HomeViewState extends State<HomeView> {
   int _page = 1; // 页码
   bool _isLoading = false; // 当前正在加载中
   bool _hasMore = true; // 是否还有下一页
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    // _getBannerList();
+    // _getCategoryList();
+    // _getSpecialRecommend();
+    // _getInVogueList();
+    // _getOnetStopList();
+    // _getRecommendList();
+    _registerEvent();
+    // initState => build => 下拉刷新组件 => 可操作
+    Future.microtask((){
+      _paddingTop = 100;
+      setState(() {});
+      _key.currentState?.show();
+    });
+  }
+
   // 获取推荐列表
-  void _getRecommendList() async {
+  Future<void> _getRecommendList() async {
     // 已有请求/没有下一页，放弃请求
     if (_isLoading || !_hasMore) {
       return;
@@ -103,34 +124,21 @@ class _HomeViewState extends State<HomeView> {
   }
 
   // 获取热榜推荐
-  void _getInVogueList() async {
+  Future<void> _getInVogueList() async {
     _inVogueResult = await getInVogueListAPI();
-    setState(() {});
+    // setState(() {});
   }
 
   // 获取一站式推荐
-  void _getOnetStopList() async {
+  Future<void> _getOnetStopList() async {
     _oneStopResult = await getONeStopListAPI();
-    setState(() {});
-  }
-
-  @override
-  void initState() {
-    // TODO: implement initState
-    super.initState();
-    _getBannerList();
-    _getCategoryList();
-    _getSpecialRecommend();
-    _getInVogueList();
-    _getOnetStopList();
-    _getRecommendList();
-    _registerEvent();
+    // setState(() {});
   }
 
   // 监听滚动到底部的事件
   void _registerEvent() {
     _controller.addListener((){
-      if (_controller.position.pixels >= 
+      if (_controller.position.pixels >= // ==可能直接滑过，不会触发
       _controller.position.maxScrollExtent - 50) {
         // 加载下一页数据
         _getRecommendList();
@@ -139,28 +147,56 @@ class _HomeViewState extends State<HomeView> {
   }
 
   // 获取特惠推荐
-  void _getSpecialRecommend() async {
+  Future<void> _getSpecialRecommend() async {
     _specialRecommendResult = await getSpecialRecommendAPI();
-    setState(() {});
+    // setState(() {});
   }
 
   // 获取分类列表
-  void _getCategoryList() async {
+  Future<void> _getCategoryList() async {
     _categoryList = await getCategoryListAPI();
-    setState(() {});
+    // setState(() {});
   }
   // 获取轮播图
-  void _getBannerList() async {
+  Future<void> _getBannerList() async {
     _bannerList = await getBannerListAPI();
-    setState(() {});
+    // setState(() {});
   }
 
+  Future<void> _onRefresh() async {
+    _page = 1;
+    _isLoading = false;
+    _hasMore = true;
+    await _getBannerList();
+    await _getCategoryList();
+    await _getSpecialRecommend();
+    await _getInVogueList();
+    await _getOnetStopList();
+    await _getRecommendList();
+    // 数据获取成功，刷新成功
+    ToastUtils.showToast(context, '刷新成功');
+    _paddingTop = 0;
+    setState(() {});
+  }
   final ScrollController _controller = ScrollController();
+
+  // GlobalKey是一个方法，可以创建一个key绑定到Widget部件上，可以操作Widget
+  final GlobalKey<RefreshIndicatorState> _key = GlobalKey<RefreshIndicatorState>();
+  double _paddingTop = 0;
   @override
   Widget build(BuildContext context) { // sliver家族
-    return CustomScrollView(
+    // 包裹子组件，下拉触发onRefresh函数
+    return RefreshIndicator(
+      key: _key,
+      onRefresh: _onRefresh,
+      child: AnimatedContainer(
+        padding: EdgeInsets.only(top: _paddingTop),
+        duration: Duration(microseconds: 300),
+        child: CustomScrollView(
       controller: _controller, // 绑定控制器
       slivers: _getScrollChildren(),
+    ),
+        )
     ); 
   }
 }
