@@ -48,9 +48,9 @@ class _HomeViewState extends State<HomeView> {
         Flex( // 可控制分配比例
         direction: Axis.horizontal,
         children: [
-          Expanded(child: EmHot()),
+          Expanded(child: EmHot(specialRecommendResult: _inVogueResult, type: 'hot',)),
           SizedBox(width: 10,),
-          Expanded(child: EmHot()),
+          Expanded(child: EmHot(specialRecommendResult: _oneStopResult, type: 'step',)),
         ],))),
       SliverToBoxAdapter(child: SizedBox(height: 10,),),
       EmMorelist(),
@@ -64,6 +64,32 @@ class _HomeViewState extends State<HomeView> {
     subTypes: [],
   );
 
+  // 热榜推荐组件
+  SpecialRecommendResult _inVogueResult = SpecialRecommendResult(
+    id: '', 
+    title: '', 
+    subTypes: []
+  );
+
+  // 一站式推荐组件
+  SpecialRecommendResult _oneStopResult = SpecialRecommendResult(
+    id: '', 
+    title: '', 
+    subTypes: []
+  );
+
+  // 获取热榜推荐
+  void _getInVogueList() async {
+    _inVogueResult = await getInVogueListAPI();
+    setState(() {});
+  }
+
+  // 获取一站式推荐
+  void _getOnetStopList() async {
+    _oneStopResult = await getONeStopListAPI();
+    setState(() {});
+  }
+
   @override
   void initState() {
     // TODO: implement initState
@@ -71,6 +97,8 @@ class _HomeViewState extends State<HomeView> {
     _getBannerList();
     _getCategoryList();
     _getSpecialRecommend();
+    _getInVogueList();
+    _getOnetStopList();
   }
 
   // 获取特惠推荐

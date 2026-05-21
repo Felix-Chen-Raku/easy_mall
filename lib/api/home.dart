@@ -26,3 +26,15 @@ Future<SpecialRecommendResult> getSpecialRecommendAPI () async {
   final res = SpecialRecommendResult.fromJson(await dioRequest.get(HttpConstants.PRODUCT_LIST));
   return res;
 }
+
+// 封装处理热搜推荐
+Future<SpecialRecommendResult> getInVogueListAPI () async {
+  // 返回请求
+  return SpecialRecommendResult.fromJson(await dioRequest.get(HttpConstants.IN_VOGUE_LIST));
+}
+
+// 封装处理一站式推荐
+Future<SpecialRecommendResult> getONeStopListAPI () async {
+  // 返回请求
+  return SpecialRecommendResult.fromJson(await dioRequest.get(HttpConstants.ONE_STOP_LIST));
+}

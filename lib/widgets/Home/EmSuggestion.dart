@@ -70,7 +70,7 @@ class _EmSuggestionState extends State<EmSuggestion> {
               borderRadius: BorderRadius.circular(12),
               color: Color.fromARGB(255, 240, 96, 12)
             ),
-            child: Text('${list[index].price}',style: TextStyle(color: Colors.white),),
+            child: Text('￥${list[index].price}',style: TextStyle(color: Colors.white),),
           ),
         ]
       );
