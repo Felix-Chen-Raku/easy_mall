@@ -15,7 +15,7 @@ class MyView extends StatefulWidget {
 
 class _MyViewState extends State<MyView> {
 
-  final UserController _userController = Get.put(UserController());
+  final UserController _userController = Get.find();
 
   Widget _buildHeader() {
     return Container(

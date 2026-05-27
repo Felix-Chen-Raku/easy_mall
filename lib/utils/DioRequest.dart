@@ -1,6 +1,7 @@
 // 基于DIo进行二次封装
 import 'package:dio/dio.dart';
 import 'package:easy_mall/constants/index.dart';
+import 'package:easy_mall/stores/TokenManager.dart';
 
 class Diorequest {
   final _dio = Dio(); // dio请求对象
@@ -18,6 +19,12 @@ class Diorequest {
     _dio.interceptors.add(
       InterceptorsWrapper(
         onRequest: (request, handler){
+          // 注入token
+          if (tokenManager.getToken().isNotEmpty) {
+            request.headers = {
+            'Authorization': 'Bearer ${tokenManager.getToken()}'
+          };
+          }
           handler.next(request);
         },
         onResponse: (response, handler){

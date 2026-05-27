@@ -1,5 +1,6 @@
 import 'package:dio/dio.dart';
 import 'package:easy_mall/api/user.dart';
+import 'package:easy_mall/stores/TokenManager.dart';
 import 'package:easy_mall/stores/UserController.dart';
 import 'package:flutter/material.dart';
 import 'package:easy_mall/utils/ToastUtils.dart';
@@ -78,7 +79,8 @@ class _LoginPageState extends State<LoginPage> {
       'password' : _codeController.text
       });
       // print(res);
-      _userController.updateUserInfo(res) ;
+      _userController.updateUserInfo(res);
+      tokenManager.setToken(res.token); // 写入持久化数据
       ToastUtils.showToast(context, '登录成功');
       Navigator.pop(context);
     } catch (e) {

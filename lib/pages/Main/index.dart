@@ -1,8 +1,13 @@
+import 'package:easy_mall/api/user.dart';
 import 'package:easy_mall/pages/Cart/index.dart';
 import 'package:easy_mall/pages/Category/index.dart';
 import 'package:easy_mall/pages/Home/index.dart';
 import 'package:easy_mall/pages/My/index.dart';
+import 'package:easy_mall/stores/TokenManager.dart';
+import 'package:easy_mall/stores/UserController.dart';
+
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
 class MainPage extends StatefulWidget {
   MainPage({Key? key}) : super(key: key);
@@ -57,6 +62,22 @@ class _MainPageState extends State<MainPage> {
   // 返回四个页面
   List<Widget> _getChildren(){
     return [HomeView(), CategoryView(), CartView(), MyView()];
+  }
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    // 初始化用户
+    _initUser();
+  }
+  final UserController _userController = Get.put(UserController());
+  _initUser() async {
+    await tokenManager.init(); // 先初始化token
+    if (tokenManager.getToken().isNotEmpty) {
+      // 有token就获取用户信息
+      _userController.updateUserInfo(await getUserInfoAPI());
+    }
   }
 
   @override
