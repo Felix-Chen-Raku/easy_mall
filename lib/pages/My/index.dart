@@ -1,5 +1,7 @@
 import 'package:easy_mall/api/my.dart';
 import 'package:easy_mall/models/home.dart';
+import 'package:easy_mall/models/user.dart';
+import 'package:easy_mall/stores/TokenManager.dart';
 import 'package:easy_mall/stores/UserController.dart';
 import 'package:easy_mall/widgets/Home/EmMoreList.dart';
 import 'package:easy_mall/widgets/My/EmGuess.dart';
@@ -16,6 +18,38 @@ class MyView extends StatefulWidget {
 class _MyViewState extends State<MyView> {
 
   final UserController _userController = Get.find();
+
+  Widget _getLogout() {
+    return _userController.user.value.id.isNotEmpty
+    ? Expanded(child: GestureDetector(
+      onTap: () {
+        showDialog(
+          context: context, 
+          builder: (context) {
+            return AlertDialog(
+              title: Text('提示'),
+              content: Text('确认退出登录吗'),
+              actions: [
+                TextButton(
+                  onPressed: (){
+                  Navigator.pop(context);
+                }, 
+                  child: Text('取消')),
+                TextButton(
+                  onPressed: () async {
+                    await tokenManager.removeToken();
+                    _userController.updateUserInfo(UserInfo.fromJSON({}));
+                    Navigator.pop(context);
+                  }, 
+                  child: Text('确认')),
+              ],
+            );
+          },);
+      },
+      child: Text('退出',textAlign: TextAlign.end,),
+    ))
+    : Text('');
+  }
 
   Widget _buildHeader() {
     return Container(
@@ -50,7 +84,6 @@ class _MyViewState extends State<MyView> {
                     if (_userController.user.value.id.isEmpty) {
                       Navigator.pushNamed(context, '/login');
                     }
-                    
                   },
                   child: Text(
                   _userController.user.value.id.isEmpty 
@@ -59,11 +92,12 @@ class _MyViewState extends State<MyView> {
                   style: TextStyle(fontSize: 18, fontWeight: FontWeight.w600),
                 ),
                 );
-                })
+                }),
                 
               ],
             ),
           ),
+          Obx(()=> _getLogout())
         ],
       ),
     );
