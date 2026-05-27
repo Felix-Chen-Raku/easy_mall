@@ -1,8 +1,10 @@
 import 'package:easy_mall/api/my.dart';
 import 'package:easy_mall/models/home.dart';
+import 'package:easy_mall/stores/UserController.dart';
 import 'package:easy_mall/widgets/Home/EmMoreList.dart';
 import 'package:easy_mall/widgets/My/EmGuess.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
 class MyView extends StatefulWidget {
   MyView({Key? key}) : super(key: key);
@@ -12,6 +14,9 @@ class MyView extends StatefulWidget {
 }
 
 class _MyViewState extends State<MyView> {
+
+  final UserController _userController = Get.put(UserController());
+
   Widget _buildHeader() {
     return Container(
       decoration: BoxDecoration(
@@ -24,25 +29,38 @@ class _MyViewState extends State<MyView> {
       padding: const EdgeInsets.only(left: 20, right: 40, top: 80, bottom: 20),
       child: Row(
         children: [
-          CircleAvatar(
+          Obx((){
+            return CircleAvatar(
             radius: 26,
-            backgroundImage: const AssetImage('lib/assets/goods_avatar.png'),
+            backgroundImage: _userController.user.value.avatar.isEmpty
+              ? const AssetImage('lib/assets/goods_avatar.png')
+              : NetworkImage(_userController.user.value.avatar),
             backgroundColor: Colors.white,
-          ),
+          );
+          }),
           const SizedBox(width: 12),
           Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                GestureDetector(
+                Obx((){
+                  // Obx中必须有可监测的响应式数据
+                  return GestureDetector(
                   onTap: () {
-                    Navigator.pushNamed(context, '/login');
+                    if (_userController.user.value.id.isEmpty) {
+                      Navigator.pushNamed(context, '/login');
+                    }
+                    
                   },
                   child: Text(
-                  '立即登录',
+                  _userController.user.value.id.isEmpty 
+                  ? '立即登录'
+                  : _userController.user.value.id,
                   style: TextStyle(fontSize: 18, fontWeight: FontWeight.w600),
                 ),
-                ),
+                );
+                })
+                
               ],
             ),
           ),

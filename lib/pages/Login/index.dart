@@ -1,7 +1,11 @@
 import 'package:dio/dio.dart';
 import 'package:easy_mall/api/user.dart';
+import 'package:easy_mall/stores/UserController.dart';
 import 'package:flutter/material.dart';
 import 'package:easy_mall/utils/ToastUtils.dart';
+import 'package:get/get.dart';
+
+
 
 class LoginPage extends StatefulWidget {
   LoginPage({Key? key}) : super(key: key);
@@ -13,6 +17,7 @@ class LoginPage extends StatefulWidget {
 class _LoginPageState extends State<LoginPage> {
   TextEditingController _phoneController = TextEditingController(); // 账号控制器
   TextEditingController _codeController = TextEditingController(); // 密码控制器
+  final UserController _userController = Get.find();
   // 用户账号Widget
   Widget _buildPhoneTextField() {
     return TextFormField(
@@ -72,7 +77,8 @@ class _LoginPageState extends State<LoginPage> {
       'account' : _phoneController.text,
       'password' : _codeController.text
       });
-      print(res);
+      // print(res);
+      _userController.updateUserInfo(res) ;
       ToastUtils.showToast(context, '登录成功');
       Navigator.pop(context);
     } catch (e) {
